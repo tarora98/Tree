@@ -1,0 +1,84 @@
+public class Solution {
+
+/*	TreeNode structure 
+ * 
+ * class TreeNode<T> {
+		T data;
+		ArrayList<TreeNode<T>> children;
+
+		TreeNode(T data){
+			this.data = data;
+			children = new ArrayList<TreeNode<T>>();
+		}
+	}*/		
+    
+    
+    static class Pair
+    {
+        TreeNode<Integer> max,secondMax;
+        
+        Pair( TreeNode<Integer> x, TreeNode<Integer> y  )
+        {
+            max=x;
+            secondMax=y;
+        }
+    }
+    
+    
+    public static Pair helper(TreeNode<Integer> root)
+    {
+        Pair result;
+        if(root.children.size()==0)
+        {
+            result=new Pair(root,null);
+            return result;
+        }
+        
+        result=new Pair(root,null);
+        for(int i=0;i<root.children.size();i++)
+        {
+            Pair temp=helper( root.children.get(i) );
+            if(temp.max.data>result.max.data)
+            {
+                TreeNode<Integer> z=result.max;
+                result.max=temp.max;
+                if(temp.secondMax!=null)
+                {
+                    if(z.data>temp.secondMax.data)
+                        result.secondMax=z;
+                    else
+                        result.secondMax=temp.secondMax;
+                }
+                else
+                {
+                    result.secondMax=z;
+                }
+            }
+            else if(temp.max.data<result.max.data)
+            {
+                if(result.secondMax!=null)
+                {
+                    if( temp.max.data>result.secondMax.data  )
+                        result.secondMax=temp.max;
+                }
+                else
+                    result.secondMax=temp.max;
+            }
+            else
+            {
+                   if(result.secondMax==null)
+                       result.secondMax=temp.secondMax;
+                   else if( temp.secondMax!=null &&  result.secondMax!=null &&result.secondMax.data<temp.secondMax.data ){
+                       result.secondMax=temp.secondMax;
+                   }
+            }
+        }
+        return result;
+    }
+	  
+        public static TreeNode<Integer> findSecondLargest(TreeNode<Integer> root){
+            
+            return helper(root).secondMax;
+            
+    }
+}
