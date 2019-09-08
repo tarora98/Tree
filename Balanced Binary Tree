@@ -1,0 +1,89 @@
+/**
+ * Definition for binary tree
+ * class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) {
+ *      val = x;
+ *      left=null;
+ *      right=null;
+ *     }
+ * }
+ */
+class Pair{
+        public int height;
+        public int Balance;
+    }
+public class Solution {
+    public int isBalanced(TreeNode A) {
+        if(A==null){
+            Pair result=new Pair();
+            result.height=0;
+            result.Balance=1;
+            return result.Balance;
+        }
+        int le=isBalanced(A.left);
+        int ri=isBalanced(A.right);
+        int height1=le.height-ri.height;
+        Pair ans;
+        if(!le.isBalanced || !ri.isBalanced || height1>1){
+            ans=new Pair();
+            ans.height=1+Math.max(le.height,ri.height);
+            ans.Balance=0;
+        }
+        else{
+            ans=new Pair();
+            ans.height=1+Math.max(le.height,ri.height);
+            ans.Balance=1;
+        }
+        return ans.Balance;
+    }
+}
+/*
+public class Solution {
+    static int MaxDepth(TreeNode A){
+        if(A==null){
+            return 0;
+        }
+        int left=MaxDepth(A.left);
+        int right=MaxDepth(A.right);
+        if(left>right){
+            return (left+1);
+        }
+        else{
+            return (right+1);
+        }
+    }
+    public int isBalanced(TreeNode A) {
+        if(isBalanced1(A)==true)
+        {
+            return 1;
+        }
+        return 0;
+    }
+    static Boolean isBalanced1(TreeNode A) {
+        if(A==null){
+            return true;
+        }
+        int left=MaxDepth(A.left);
+        int right=MaxDepth(A.right);
+        if(left-right>=-1 && left-right<=1){
+            return isBalanced1(A.left) && isBalanced1(A.right);
+        }
+        return false;
+    }
+}*/
+/*public class Solution {
+    public int isBalanced(TreeNode A) {
+        if (A == null) return 1;
+        if (Math.abs(height(A.left) - height(A.right)) > 1) {
+            return 0;
+        }
+        return Math.min(isBalanced(A.left), isBalanced(A.right));
+    }
+    public int height(TreeNode A) {
+        if (A == null) return 0;
+        return 1 + Math.max(height(A.left), height(A.right));
+    }
+}*/
